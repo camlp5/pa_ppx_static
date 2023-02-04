@@ -1,5 +1,5 @@
 `pa_ppx_static`: what it says on the tin
-=============================================
+========================================
 :toc:
 :toc-placement: preamble
 
