@@ -1,0 +1,5 @@
+`pa_ppx_typedstatic`: what it says on the tin
+=============================================
+:toc:
+:toc-placement: preamble
+
