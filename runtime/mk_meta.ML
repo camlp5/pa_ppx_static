@@ -13,16 +13,16 @@ Arg.(parse [
 ;;
 
 Fmt.(pf stdout {|
-# Specifications for the "pa_ppx_typedstatic_runtime" package:
+# Specifications for the "pa_ppx_static_runtime" package:
 requires = "fmt,re,pcre,pa_ppx.base"
 version = "%s"
-description = "pa_ppx_typedstatic runtime support"
+description = "pa_ppx_static runtime support"
 
 # For linking
-archive(byte) = "pa_ppx_typedstatic_runtime.cma"
-archive(native) = "pa_ppx_typedstatic_runtime.cmxa"
+archive(byte) = "pa_ppx_static_runtime.cma"
+archive(native) = "pa_ppx_static_runtime.cmxa"
 
 # For the toploop:
-archive(byte,toploop) = "pa_ppx_typedstatic_runtime.cma"
+archive(byte,toploop) = "pa_ppx_static_runtime.cma"
 
 |} version)

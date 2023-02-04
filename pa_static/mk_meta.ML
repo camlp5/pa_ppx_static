@@ -13,24 +13,24 @@ Arg.(parse [
 ;;
 
 Fmt.(pf stdout {|
-# Specifications for the "pa_ppx_typedstatic" preprocessor:
-requires = "camlp5,fmt,pa_ppx.base,pa_ppx_typedstatic_runtime,camlp5.parser_quotations"
+# Specifications for the "pa_ppx_static" preprocessor:
+requires = "camlp5,fmt,pa_ppx.base,pa_ppx_static_runtime,camlp5.parser_quotations"
 version = "%s"
-description = "pa_ppx_typedstatic: pa_ppx_typedstatic rewriter"
+description = "pa_ppx_static: pa_ppx_static rewriter"
 
 # For linking
 package "link" (
 requires = "camlp5,fmt,pa_ppx.base.link,camlp5.parser_quotations.link"
-archive(byte) = "pa_ppx_typedstatic.cma"
-archive(native) = "pa_ppx_typedstatic.cmxa"
+archive(byte) = "pa_ppx_static.cma"
+archive(native) = "pa_ppx_static.cmxa"
 )
 
 # For the toploop:
-archive(byte,toploop) = "pa_ppx_typedstatic.cma"
+archive(byte,toploop) = "pa_ppx_static.cma"
 
   # For the preprocessor itself:
   requires(syntax,preprocessor) = "camlp5,fmt,pa_ppx.base,camlp5.parser_quotations"
-  archive(syntax,preprocessor,-native) = "pa_ppx_typedstatic.cma"
-  archive(syntax,preprocessor,native) = "pa_ppx_typedstatic.cmxa"
+  archive(syntax,preprocessor,-native) = "pa_ppx_static.cma"
+  archive(syntax,preprocessor,native) = "pa_ppx_static.cmxa"
 
 |} version)

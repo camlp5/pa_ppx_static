@@ -4,9 +4,9 @@ open OUnit2
 
 let test_simple ctxt =
   ()
-  ; [%typedstatic (() : unit)]
+  ; [%static (() : unit)]
 
-let suite = "Test pa_ppx_typedstatic" >::: [
+let suite = "Test pa_ppx_static" >::: [
       "simple"   >:: test_simple
     ]
 

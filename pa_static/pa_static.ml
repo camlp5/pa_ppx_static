@@ -23,7 +23,7 @@ let add it e =
   let n = !(it.counter) in
   incr it.counter ;
   let name = Fmt.(str "%s_%d__" it.prefix n) in
-  let si = <:str_item< let $lid:name$ = Pa_ppx_typedstatic.Runtime.Static.mk (fun () -> $e$) >> in
+  let si = <:str_item< let $lid:name$ = Pa_ppx_static.Runtime.Static.mk (fun () -> $e$) >> in
   Std.push it.statics (si, loc_of_str_item si) ;
   name
 
@@ -31,23 +31,23 @@ let all it = !(it.statics)
 
 end
 
-type scratchdata_t += Pa_typedstatic of Statics.t
+type scratchdata_t += Pa_static of Statics.t
 
 let add_static arg e =
-  match Ctxt.refscratchdata arg "typedstatic" with
-    Pa_typedstatic ctxt -> Statics.add ctxt e
+  match Ctxt.refscratchdata arg "static" with
+    Pa_static ctxt -> Statics.add ctxt e
   | _ -> assert false
 
 let init arg it =
-   Ctxt.init_refscratchdata arg "typedstatic" (Pa_typedstatic it)
+   Ctxt.init_refscratchdata arg "static" (Pa_static it)
 
 let all_statics arg =
-  match Ctxt.refscratchdata arg "typedstatic" with
-    Pa_typedstatic ctxt -> Statics.all ctxt
+  match Ctxt.refscratchdata arg "static" with
+    Pa_static ctxt -> Statics.all ctxt
   | _ -> assert false
 
 let init arg it =
-   Ctxt.init_refscratchdata arg "typedstatic" (Pa_typedstatic it)
+   Ctxt.init_refscratchdata arg "static" (Pa_static it)
 
 let wrap_implem arg z =
   let (sil, status) = z in
@@ -62,19 +62,19 @@ let finish_implem arg z =
   let sil0 = all_statics arg in
   (sil0@sil, status)
 
-let rewrite_typedstatic arg = function
-  <:expr:< [%typedstatic ( $e$ : $t$) ] >> as e0 ->
+let rewrite_static arg = function
+  <:expr:< [%static ( $e$ : $t$) ] >> as e0 ->
    let sname = add_static arg e in
-   <:expr< Pa_ppx_typedstatic.Runtime.Static.get $lid:sname$ >>
+   <:expr< Pa_ppx_static.Runtime.Static.get $lid:sname$ >>
 | _ -> assert false
 
 let install () = 
 let ef = EF.mk () in 
 let ef = EF.{ (ef) with
             expr = extfun ef.expr with [
-    <:expr:< [%typedstatic $exp:_$ ] >> as z ->
+    <:expr:< [%static $exp:_$ ] >> as z ->
     fun arg fallback ->
-      Some (rewrite_typedstatic arg z)
+      Some (rewrite_static arg z)
   ] } in
 
 let ef = EF.{ (ef) with
@@ -85,7 +85,7 @@ let ef = EF.{ (ef) with
   ] } in
 
 
-  Pa_passthru.(install { name = "pa_typedstatic"; ef =  ef ; pass = None ; before = [] ; after = [] })
+  Pa_passthru.(install { name = "pa_static"; ef =  ef ; pass = None ; before = [] ; after = [] })
 ;;
 
 install();;

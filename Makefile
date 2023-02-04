@@ -8,7 +8,7 @@ WD=$(shell pwd)
 DESTDIR=
 RM=rm
 
-SYSDIRS= runtime pa_typedstatic
+SYSDIRS= runtime pa_static
 
 TESTDIRS= tests
 
@@ -32,16 +32,16 @@ mdx-test:: README.asciidoc.TEST
 	diff -Bwiu $^
 
 META: all
-	$(JOINMETA) -rewrite pa_ppx_typestatic_runtime:pa_ppx_typedstatic.runtime \
-			-direct-include pa_typedstatic \
+	$(JOINMETA) -rewrite pa_ppx_typestatic_runtime:pa_ppx_static.runtime \
+			-direct-include pa_static \
 			-wrap-subdir runtime:runtime > META
 
 install: META
-	$(OCAMLFIND) remove pa_ppx_typedstatic || true
-	$(OCAMLFIND) install pa_ppx_typedstatic META local-install/lib/*/*.*
+	$(OCAMLFIND) remove pa_ppx_static || true
+	$(OCAMLFIND) install pa_ppx_static META local-install/lib/*/*.*
 
 uninstall:
-	$(OCAMLFIND) remove pa_ppx_typedstatic || true
+	$(OCAMLFIND) remove pa_ppx_static || true
 
 clean::
 	set -e; for i in $(SYSDIRS) $(TESTDIRS); do cd $$i; $(MAKE) clean; cd ..; done

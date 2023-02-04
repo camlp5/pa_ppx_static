@@ -4,24 +4,24 @@ include $(TOP)/config/Makefile
 
 SYNTAX := camlp5o
 
-PACKAGES := $(PACKAGES),pa_ppx_typedstatic,ounit2,pa_ppx.utils
+PACKAGES := $(PACKAGES),pa_ppx_static,ounit2,pa_ppx.utils
 
 ML= \
-	pa_ppx_typedstatic_test.ml
+	pa_ppx_static_test.ml
 
 CMO := $(ML:.ml=.cmo)
 
-TESTS=pa_ppx_typedstatic_test.exe
+TESTS=pa_ppx_static_test.exe
 
 all: $(TESTS)
 
 test:: all
-	mkdir -p _build && ./pa_ppx_typedstatic_test.exe
+	mkdir -p _build && ./pa_ppx_static_test.exe
 
 toplevel::
 	$(LAUNCH) ocaml -nopromptcont
 
-pa_ppx_typedstatic_test.exe: pa_ppx_typedstatic_test.cmo
+pa_ppx_static_test.exe: pa_ppx_static_test.cmo
 	$(LAUNCH) $(OCAMLFIND) ocamlc -linkall -linkpkg $(OCAMLCFLAGS) -package $(PACKAGES) -linkpkg -linkall -o $@ $<
 
 clean::
