@@ -4,7 +4,7 @@ open OUnit2
 
 let test_simple ctxt =
   ()
-  ; [%static (() : unit)]
+  ; [%static ()]
 
 let suite = "Test pa_ppx_static" >::: [
       "simple"   >:: test_simple

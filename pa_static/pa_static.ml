@@ -63,7 +63,7 @@ let finish_implem arg z =
   (sil0@sil, status)
 
 let rewrite_static arg = function
-  <:expr:< [%static ( $e$ : $t$) ] >> as e0 ->
+  <:expr:< [%static $exp:e$ ] >> as e0 ->
    let sname = add_static arg e in
    <:expr< Pa_ppx_static.Runtime.Static.get $lid:sname$ >>
 | _ -> assert false
