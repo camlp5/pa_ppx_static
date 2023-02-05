@@ -1,0 +1,11 @@
+#use "topfind.camlp5";;
+#camlp5o ;;
+#require "pa_ppx_static";;
+
+(*
+;;; Local Variables: ***
+;;; mode:tuareg ***
+;;; End: ***
+
+*)
+

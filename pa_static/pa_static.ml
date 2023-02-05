@@ -96,6 +96,36 @@ let rewrite_static arg = function
    <:expr< Pa_ppx_static.Runtime.Static.get $lid:sname$ >>
 | _ -> assert false
 
+let wrap_top_phrase arg z =
+  match z with
+    None -> None
+  | Some si ->
+     let fname = Ctxt.filename arg in
+     let hexs = Digest.(fname |> string |> to_hex) in
+     let static_name_prefix = Fmt.(str "__static_%s" hexs) in
+     init arg (Statics.mk static_name_prefix []) ;
+     z
+
+let finish_top_phrase arg z =
+  match z with
+    None -> None
+  | Some si ->
+     let sil0 = all_statics arg in
+     if sil0 = [] then
+       z
+  else
+    let sil0 = all_statics arg in
+    if sil0 = [] then z
+    else
+      let loc = MLast.loc_of_str_item (List.hd sil0) in
+      let si = <:str_item:< open(struct $list:sil0@[si]$ end) >> in
+      Some si
+
+let rewrite_static arg = function
+  <:expr:< [%static $exp:e$ ] >> as e0 ->
+   let sname = add_static arg e in
+   <:expr< Pa_ppx_static.Runtime.Static.get $lid:sname$ >>
+| _ -> assert false
 let install () = 
 let ef = EF.mk () in 
 let ef = EF.{ (ef) with
@@ -110,6 +140,13 @@ let ef = EF.{ (ef) with
     z ->
     fun arg fallback -> 
       Some (z |> wrap_implem arg |> fallback arg |> finish_implem arg)
+  ] } in
+
+let ef = EF.{ (ef) with
+              top_phrase = extfun ef.top_phrase with [
+    z ->
+    fun arg fallback -> 
+      Some (z |> wrap_top_phrase arg |> fallback arg |> finish_top_phrase arg)
   ] } in
 
 
