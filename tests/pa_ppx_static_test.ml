@@ -1,4 +1,5 @@
 (** -syntax camlp5o *)
+[%%static_preamble open Rresult]
 open OUnit2
 
 

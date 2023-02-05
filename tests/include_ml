@@ -34,6 +34,6 @@ Pcaml.inter_phrases := Some ";\n";;
 
 #require "camlp5.parser_quotations";;
 #require "pa_ppx.testutils";;
-#require "pa_ppx_regexp";;
+#require "pa_ppx_static";;
 open Pa_ppx_testutils.Papr_util ;;
 

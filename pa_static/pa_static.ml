@@ -20,12 +20,19 @@ module Statics = struct
 open MLast
 type t = {
     exprs : string ExprHash.t
-  ; statics : (str_item * loc) list ref
+  ; static_preamble : MLast.str_item list
+  ; statics : str_item list ref
   ; prefix : string
   ; counter : int ref
   }
 
-let mk prefix = { exprs = ExprHash.create 23 ; prefix ; counter = ref 0 ; statics = ref [] }
+let mk prefix preamble = {
+    exprs = ExprHash.create 23
+  ; static_preamble = preamble
+  ; prefix
+  ; counter = ref 0
+  ; statics = ref []
+  }
 
 let add it e =
   match ExprHash.find it.exprs (reloc_expr e) with
@@ -36,11 +43,11 @@ let add it e =
      incr it.counter ;
      let name = Fmt.(str "%s_%d__" it.prefix n) in
      let si = <:str_item< let $lid:name$ = Pa_ppx_static.Runtime.Static.mk (fun () -> $e$) >> in
-     Std.push it.statics (si, loc_of_str_item si) ;
+     Std.push it.statics si ;
      ExprHash.add it.exprs (reloc_expr e) name ;
      name
 
-let all it = !(it.statics)
+let all it = it.static_preamble @ (List.rev !(it.statics))
 
 end
 
@@ -64,20 +71,22 @@ let init arg it =
 
 let wrap_implem arg z =
   let (sil, status) = z in
+  let (preamble_sil, sil)  = match sil with
+      (<:str_item< [%%static_preamble $structure:l$] >>, _)::tl -> (l,tl)
+    | l -> ([], l) in
   let fname = Ctxt.filename arg in
   let hexs = Digest.(fname |> string |> to_hex) in
   let static_name_prefix = Fmt.(str "__static_%s" hexs) in
-  init arg (Statics.mk static_name_prefix) ;
+  init arg (Statics.mk static_name_prefix preamble_sil) ;
   (sil, status)
 
 let finish_implem arg z =
   let (sil, status) = z in
-  let sil0 = List.rev (all_statics arg) in
+  let sil0 = all_statics arg in
   if sil0 = [] then
     (sil, status)
   else
-    let loc = snd (List.hd sil0) in
-    let sil0 = List.map fst sil0 in
+    let loc = MLast.loc_of_str_item (List.hd sil0) in
     let si = <:str_item:< open(struct $list:sil0$ end) >> in
     ([si,loc]@sil, status)
 
