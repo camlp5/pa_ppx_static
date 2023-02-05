@@ -73,7 +73,13 @@ let wrap_implem arg z =
 let finish_implem arg z =
   let (sil, status) = z in
   let sil0 = List.rev (all_statics arg) in
-  (sil0@sil, status)
+  if sil0 = [] then
+    (sil, status)
+  else
+    let loc = snd (List.hd sil0) in
+    let sil0 = List.map fst sil0 in
+    let si = <:str_item:< open(struct $list:sil0$ end) >> in
+    ([si,loc]@sil, status)
 
 let rewrite_static arg = function
   <:expr:< [%static $exp:e$ ] >> as e0 ->
