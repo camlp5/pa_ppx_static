@@ -1,5 +1,6 @@
 #use "topfind.camlp5";;
 #camlp5o ;;
+#require "camlp5.pr_o";;
 #require "pa_ppx_static";;
 
 (*

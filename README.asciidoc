@@ -3,3 +3,44 @@
 :toc:
 :toc-placement: preamble
 
+
+== Examples
+
+```ocaml
+# #use "topfind.camlp5";;
+- : unit = ()
+Findlib has been successfully loaded. Additional directives:
+  #require "package";;      to load a package
+  #list;;                   to list the available packages
+  #camlp4o;;                to load camlp4 (standard syntax)
+  #camlp4r;;                to load camlp4 (revised syntax)
+  #predicates "p,q,...";;   to set these predicates
+  Topfind.reset();;         to force that packages will be reloaded
+  #thread;;                 to enable threads
+
+- : unit = ()
+Additional Camlp5 directives:
+  #camlp5o;;                to load camlp5 (standard syntax)
+  #camlp5r;;                to load camlp5 (revised syntax)
+
+- : unit = ()
+# #camlp5o ;;
+/home/chet/Hack/Opam-2.1.2/GENERIC/4.14.0/lib/ocaml/compiler-libs: added to search path
+/home/chet/Hack/Opam-2.1.2/GENERIC/4.14.0/lib/camlp-streams: added to search path
+/home/chet/Hack/Opam-2.1.2/GENERIC/4.14.0/lib/camlp-streams/camlp_streams.cma: loaded
+/home/chet/Hack/Opam-2.1.2/GENERIC/4.14.0/lib/camlp5: added to search path
+/home/chet/Hack/Opam-2.1.2/GENERIC/4.14.0/lib/camlp5/camlp5o.cma: loaded
+# #require "camlp5.pr_o";;
+# #require "pa_ppx_static" ;;
+```
+
+```ocaml
+# let x = [%static 2] ;;
+val __static_0__ : int Pa_ppx_static.Runtime.Static.t = <abstr>
+val x : int = 2
+```
+
+```ocaml
+# [%static 1] ;;
+- : int = 1
+```

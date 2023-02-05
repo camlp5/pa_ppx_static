@@ -95,12 +95,18 @@ let rewrite_static arg = function
    <:expr< Pa_ppx_static.Runtime.Static.get $lid:sname$ >>
 | _ -> assert false
 
+let pp_str_item msg ty =
+  Fmt.(pf stderr "%s: #<str_item< %s >>\n%!" msg (Eprinter.apply Pcaml.pr_str_item Pprintf.empty_pc ty))
+
 let wrap_top_phrase arg z =
   match z with
     None -> None
   | Some si ->
+(*
+     pp_str_item "before" si ;
+ *)
      let fname = Ctxt.filename arg in
-     let static_name_prefix = "__static_%s" in
+     let static_name_prefix = "__static" in
      init arg (Statics.mk static_name_prefix []) ;
      z
 
@@ -108,6 +114,9 @@ let finish_top_phrase arg z =
   match z with
     None -> None
   | Some si ->
+(*
+     pp_str_item "after(1)" si ;
+ *)
      let sil0 = all_statics arg in
      if sil0 = [] then
        z
@@ -116,7 +125,13 @@ let finish_top_phrase arg z =
     if sil0 = [] then z
     else
       let loc = MLast.loc_of_str_item (List.hd sil0) in
-      let si = <:str_item:< open(struct $list:sil0@[si]$ end) >> in
+      let si = match si with
+          <:str_item< $exp:e$ >> ->
+             <:str_item< let open(struct $list:sil0$ end) in $e$ >>
+        | _ -> <:str_item:< open(struct $list:sil0@[si]$ end) >> in
+(*
+      pp_str_item "after(2)" si ;
+ *)
       Some si
 
 let rewrite_static arg = function
