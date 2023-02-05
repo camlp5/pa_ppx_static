@@ -5,7 +5,13 @@
 open Pa_ppx_base
 open Ppxutil
 
-module Static = struct
+module type STATIC_SIG = sig
+  type 'a t
+  val mk : (unit -> 'a) ->  'a t
+  val get : 'a t -> 'a
+end
+
+module Static : STATIC_SIG = struct
   type 'a t = {
       it : 'a option ref
     ; createf : unit -> 'a
