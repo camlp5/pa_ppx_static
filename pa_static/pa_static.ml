@@ -59,7 +59,7 @@ let wrap_implem arg z =
 
 let finish_implem arg z =
   let (sil, status) = z in
-  let sil0 = all_statics arg in
+  let sil0 = List.rev (all_statics arg) in
   (sil0@sil, status)
 
 let rewrite_static arg = function
