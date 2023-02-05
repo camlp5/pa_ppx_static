@@ -8,24 +8,37 @@ open Pa_ppx_utils
 open Pa_passthru
 open Ppxutil
 
+let reloc_expr e = Reloc.expr (fun _ -> Ploc.dummy) 0 e
+
+module ExprHash = Hashtbl.Make(struct
+                      type t = MLast.expr
+                      let equal = Reloc.eq_expr
+                      let hash e = Hashtbl.hash (reloc_expr e)
+                    end)
+
 module Statics = struct
 open MLast
 type t = {
-    statics : (str_item * loc) list ref
+    exprs : string ExprHash.t
+  ; statics : (str_item * loc) list ref
   ; prefix : string
   ; counter : int ref
   }
 
-let mk prefix = { prefix ; counter = ref 0 ; statics = ref [] }
+let mk prefix = { exprs = ExprHash.create 23 ; prefix ; counter = ref 0 ; statics = ref [] }
 
 let add it e =
-  let loc = loc_of_expr e in
-  let n = !(it.counter) in
-  incr it.counter ;
-  let name = Fmt.(str "%s_%d__" it.prefix n) in
-  let si = <:str_item< let $lid:name$ = Pa_ppx_static.Runtime.Static.mk (fun () -> $e$) >> in
-  Std.push it.statics (si, loc_of_str_item si) ;
-  name
+  match ExprHash.find it.exprs (reloc_expr e) with
+    n -> n
+  | exception Not_found ->
+     let loc = loc_of_expr e in
+     let n = !(it.counter) in
+     incr it.counter ;
+     let name = Fmt.(str "%s_%d__" it.prefix n) in
+     let si = <:str_item< let $lid:name$ = Pa_ppx_static.Runtime.Static.mk (fun () -> $e$) >> in
+     Std.push it.statics (si, loc_of_str_item si) ;
+     ExprHash.add it.exprs (reloc_expr e) name ;
+     name
 
 let all it = !(it.statics)
 
