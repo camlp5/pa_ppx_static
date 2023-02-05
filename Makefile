@@ -32,7 +32,7 @@ mdx-test:: README.asciidoc.TEST
 	diff -Bwiu $^
 
 META: all
-	$(JOINMETA) -rewrite pa_ppx_typestatic_runtime:pa_ppx_static.runtime \
+	$(JOINMETA) -rewrite pa_ppx_static_runtime:pa_ppx_static.runtime \
 			-direct-include pa_static \
 			-wrap-subdir runtime:runtime > META
 
