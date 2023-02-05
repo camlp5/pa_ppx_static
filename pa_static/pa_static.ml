@@ -75,8 +75,7 @@ let wrap_implem arg z =
       (<:str_item< [%%static_preamble $structure:l$] >>, _)::tl -> (l,tl)
     | l -> ([], l) in
   let fname = Ctxt.filename arg in
-  let hexs = Digest.(fname |> string |> to_hex) in
-  let static_name_prefix = Fmt.(str "__static_%s" hexs) in
+  let static_name_prefix = "__static" in
   init arg (Statics.mk static_name_prefix preamble_sil) ;
   (sil, status)
 
@@ -101,8 +100,7 @@ let wrap_top_phrase arg z =
     None -> None
   | Some si ->
      let fname = Ctxt.filename arg in
-     let hexs = Digest.(fname |> string |> to_hex) in
-     let static_name_prefix = Fmt.(str "__static_%s" hexs) in
+     let static_name_prefix = "__static_%s" in
      init arg (Statics.mk static_name_prefix []) ;
      z
 
