@@ -1,13 +1,14 @@
 (** -syntax camlp5o *)
-[%%static_preamble open Rresult]
+[%%static_preamble open List]
 open OUnit2
 
+let hd x = 2
 
 let test_simple ctxt =
   ()
   ; [%static ()]
-  ; [%static ()]
-  ; [%static ()]
+  ; assert_equal 2 (hd [1;2;3])
+  ; assert_equal 1 [%static hd [1;2;3]]
 
 let suite = "Test pa_ppx_static" >::: [
       "simple"   >:: test_simple

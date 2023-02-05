@@ -1,0 +1,14 @@
+[%%static_preamble open List]
+
+let hd x = 2 ;;
+hd [1;2;3] ;;
+
+let x = [%static hd [1;2;3]] ;;
+
+(*
+;;; Local Variables: ***
+;;; mode:tuareg ***
+;;; End: ***
+
+*)
+

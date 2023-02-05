@@ -15,8 +15,11 @@ TESTS=pa_ppx_static_test.exe
 
 all: $(TESTS)
 
-test:: all
+
+test:: all toplevel_test.asciidoc.TEST
 	mkdir -p _build && ./pa_ppx_static_test.exe
+
+toplevel_test.asciidoc.corrected: use_test_ml
 
 toplevel::
 	$(LAUNCH) ocaml -nopromptcont

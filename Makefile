@@ -23,14 +23,6 @@ test: all
 
 mdx-test:: README.asciidoc.TEST
 
-.PRECIOUS: %.asciidoc.corrected
-
-%.asciidoc.corrected: %.asciidoc
-	$(LAUNCH) ocaml-mdx test -o $@ $^
-
-%.asciidoc.TEST: %.asciidoc.corrected %.asciidoc
-	diff -Bwiu $^
-
 META: all
 	$(JOINMETA) -rewrite pa_ppx_static_runtime:pa_ppx_static.runtime \
 			-direct-include pa_static \

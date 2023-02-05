@@ -74,7 +74,6 @@ let wrap_implem arg z =
   let (preamble_sil, sil)  = match sil with
       (<:str_item< [%%static_preamble $structure:l$] >>, _)::tl -> (l,tl)
     | l -> ([], l) in
-  let fname = Ctxt.filename arg in
   let static_name_prefix = "__static" in
   init arg (Statics.mk static_name_prefix preamble_sil) ;
   (sil, status)
@@ -89,11 +88,31 @@ let finish_implem arg z =
     let si = <:str_item:< open(struct $list:sil0$ end) >> in
     ([si,loc]@sil, status)
 
+let wrap_use_file arg z =
+  let (sil, b) = z in
+  let (preamble_sil, sil)  = match sil with
+      (<:str_item< [%%static_preamble $structure:l$] >>)::tl -> (l,tl)
+    | l -> ([], l) in
+  let static_name_prefix = "__static" in
+  init arg (Statics.mk static_name_prefix preamble_sil) ;
+  (sil, b)
+
+let finish_use_file arg z =
+  let (sil, b) = z in
+  let sil0 = all_statics arg in
+  if sil0 = [] then
+    (sil, b)
+  else
+    let loc = MLast.loc_of_str_item (List.hd sil0) in
+    let si = <:str_item:< open(struct $list:sil0$ end) >> in
+    ([si]@sil, b)
+
 let rewrite_static arg = function
-  <:expr:< [%static $exp:e$ ] >> as e0 ->
+  <:expr:< [%static $exp:e$ ] >> ->
    let sname = add_static arg e in
    <:expr< Pa_ppx_static.Runtime.Static.get $lid:sname$ >>
-| _ -> assert false
+| e -> Fmt.(raise_failwithf (MLast.loc_of_expr e) "pa_ppx_static: payload of a [%%static ...] extension must be a single expression: %a"
+            Pp_MLast.pp_expr e)
 
 let pp_str_item msg ty =
   Fmt.(pf stderr "%s: #<str_item< %s >>\n%!" msg (Eprinter.apply Pcaml.pr_str_item Pprintf.empty_pc ty))
@@ -105,7 +124,6 @@ let wrap_top_phrase arg z =
 (*
      pp_str_item "before" si ;
  *)
-     let fname = Ctxt.filename arg in
      let static_name_prefix = "__static" in
      init arg (Statics.mk static_name_prefix []) ;
      z
@@ -135,7 +153,7 @@ let finish_top_phrase arg z =
       Some si
 
 let rewrite_static arg = function
-  <:expr:< [%static $exp:e$ ] >> as e0 ->
+  <:expr:< [%static $exp:e$ ] >> ->
    let sname = add_static arg e in
    <:expr< Pa_ppx_static.Runtime.Static.get $lid:sname$ >>
 | _ -> assert false
@@ -160,6 +178,13 @@ let ef = EF.{ (ef) with
     z ->
     fun arg fallback -> 
       Some (z |> wrap_top_phrase arg |> fallback arg |> finish_top_phrase arg)
+  ] } in
+
+let ef = EF.{ (ef) with
+              use_file = extfun ef.use_file with [
+    z ->
+    fun arg fallback -> 
+      Some (z |> wrap_use_file arg |> fallback arg |> finish_use_file arg)
   ] } in
 
 
