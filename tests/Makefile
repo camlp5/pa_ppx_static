@@ -1,15 +1,14 @@
 WD=$(shell pwd)
 TOP=..
-include $(TOP)/config/Makefile
-
-SYNTAX := camlp5o
+include $(TOP)/config/Makefile.sub
 
 PACKAGES := $(PACKAGES),pa_ppx_static,ounit2,pa_ppx.utils
 
 ML= \
 	pa_ppx_static_test.ml
 
-CMO := $(ML:.ml=.cmo)
+ALLSRC=$(ML)
+ALLPACKAGES=$(PACKAGES)
 
 TESTS=pa_ppx_static_test.exe
 
@@ -30,14 +29,3 @@ pa_ppx_static_test.exe: pa_ppx_static_test.cmo
 clean::
 	rm -rf *.cm* _build *.exe
 
-EXTERNAL := $(shell $(LAUNCH) $(OCAMLFIND) query -predicates byte -format '%m' $(PACKAGES) | grep local-install)
-$(CMO) $(TESTS): $(EXTERNAL)
-
-depend::
-	echo "$(CMO) $(TESTS): $(EXTERNAL)" > .depend.NEW
-	$(LAUNCH) $(OCAMLFIND) ocamldep $(DEBUG) $(WARNERR) -package $(PACKAGES) -syntax camlp5o \
-	$(ML) \
-	>> .depend.NEW
-	mv .depend.NEW .depend
-
--include .depend

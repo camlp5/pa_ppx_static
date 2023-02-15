@@ -2,11 +2,10 @@
 # Copyright (c) INRIA 2007-2017
 
 TOP=.
-include $(TOP)/config/Makefile
+include $(TOP)/config/Makefile.top
 
 WD=$(shell pwd)
 DESTDIR=
-RM=rm
 
 SYSDIRS= runtime pa_static
 
@@ -23,7 +22,7 @@ test: all
 
 mdx-test:: README.asciidoc.TEST
 
-META: all
+META: sys
 	$(JOINMETA) -rewrite pa_ppx_static_runtime:pa_ppx_static.runtime \
 			-direct-include pa_static \
 			-wrap-subdir runtime:runtime > META

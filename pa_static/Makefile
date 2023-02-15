@@ -3,20 +3,16 @@
 
 WD=$(shell pwd)
 TOP=..
-include $(TOP)/config/Makefile
+include $(TOP)/config/Makefile.sub
 
 DESTDIR=
-RM=rm
 
 PACKAGES := $(PACKAGES),fmt,pa_ppx.base,pa_ppx.deriving_plugins.std
 TARGET := pa_ppx_static.cma
 ML := pa_static.ml
 TOOLSML = mk_meta.ml
-CMO := $(ML:.ml=.cmo)
-CMI := $(ML:.ml=.cmi)
-CMX := $(ML:.ml=.cmx)
-CMT := $(ML:.ml=.cmt)
-CMTI := $(MLI:.mli=.cmti)
+ALLSRC=$(ML) $(TOOLSML)
+ALLPACKAGES=$(PACKAGES)
 
 export MIGRATE_CFLAGS= -ppopt -pa_import-I -ppopt . -ppopt -pa_passthru-debug \
 	-ppopt -pa_import-package -ppopt $(PACKAGES)
@@ -32,15 +28,6 @@ camlp5.pa_ppx_static: $(TARGET)
 
 camlp5.pa_ppx_static.opt: $(TARGET:.cma=.cmxa)
 	$(MKCAMLP5OPT) -package fmt,re,camlp5.pa_r,camlp5.pr_r,pa_ppx.base $(TARGET:.cma=.cmxa) -o $@
-
-META: mk_meta
-	./mk_meta > META
-
-mk_meta: mk_meta.cmo
-	$(OCAMLFIND) ocamlc -linkpkg -linkall -package $(PACKAGES) $< -o $@
-
-mk_meta.ml: mk_meta.ML
-	cppo $< > $@
 
 install:: META
 	mkdir -p $(DESTDIR)/lib
@@ -58,13 +45,3 @@ $(TARGET:.cma=.cmxa): $(CMO:.cmo=.cmx)
 
 $(TARGET): $(CMO)
 $(TARGET:.cma=.cmxa): $(CMO:.cmo=.cmx)
-
-EXTERNAL := $(shell $(OCAMLFIND) query -predicates byte -format '%m' $(PACKAGES) | grep local-install)
-$(CMO) $(CMI) $(CMX): $(EXTERNAL)
-
-depend::
-	echo "$(CMO) $(CMI) $(CMX): $(EXTERNAL)" > .depend.NEW
-	$(OCAMLFIND) ocamldep $(DEBUG) -package $(PACKAGES) -syntax camlp5o *.ml *.mli >> .depend.NEW \
-		&& mv .depend.NEW .depend
-
--include .depend
