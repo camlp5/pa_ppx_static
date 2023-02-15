@@ -17,7 +17,7 @@ all: sys
 sys:
 	set -e; for i in $(SYSDIRS); do cd $$i; $(MAKE) all; cd ..; done
 
-test: all
+test: all mdx-test
 	set -e; for i in $(TESTDIRS); do cd $$i; $(MAKE) test; cd ..; done
 
 mdx-test:: README.asciidoc.TEST
