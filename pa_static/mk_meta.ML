@@ -21,16 +21,16 @@ description = "pa_ppx_static: pa_ppx_static rewriter"
 # For linking
 package "link" (
 requires = "camlp5,fmt,pa_ppx.base.link,camlp5.parser_quotations.link"
-archive(byte) = "pa_ppx_static.cma"
-archive(native) = "pa_ppx_static.cmxa"
+archive(byte) = "pa_ppx_static.cmo"
+archive(native) = "pa_ppx_static.cmx"
 )
 
 # For the toploop:
-archive(byte,toploop) = "pa_ppx_static.cma"
+archive(byte,toploop) = "pa_ppx_static.cmo"
 
   # For the preprocessor itself:
   requires(syntax,preprocessor) = "camlp5,fmt,pa_ppx.base,camlp5.parser_quotations"
-  archive(syntax,preprocessor,-native) = "pa_ppx_static.cma"
-  archive(syntax,preprocessor,native) = "pa_ppx_static.cmxa"
+  archive(syntax,preprocessor,-native) = "pa_ppx_static.cmo"
+  archive(syntax,preprocessor,native) = "pa_ppx_static.cmx"
 
 |} version)

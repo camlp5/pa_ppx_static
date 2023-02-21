@@ -42,7 +42,7 @@ let add it e =
      let n = !(it.counter) in
      incr it.counter ;
      let name = Fmt.(str "%s_%d__" it.prefix n) in
-     let si = <:str_item< let $lid:name$ = Pa_ppx_static.Runtime.Static.mk (fun () -> $e$) >> in
+     let si = <:str_item< let $lid:name$ = Pa_ppx_static_runtime.Static.mk (fun () -> $e$) >> in
      Std.push it.statics si ;
      ExprHash.add it.exprs (reloc_expr e) name ;
      name
@@ -110,7 +110,7 @@ let finish_use_file arg z =
 let rewrite_static arg = function
   <:expr:< [%static $exp:e$ ] >> ->
    let sname = add_static arg e in
-   <:expr< Pa_ppx_static.Runtime.Static.get $lid:sname$ >>
+   <:expr< Pa_ppx_static_runtime.Static.get $lid:sname$ >>
 | e -> Fmt.(raise_failwithf (MLast.loc_of_expr e) "pa_ppx_static: payload of a [%%static ...] extension must be a single expression: %a"
             Pp_MLast.pp_expr e)
 
@@ -155,7 +155,7 @@ let finish_top_phrase arg z =
 let rewrite_static arg = function
   <:expr:< [%static $exp:e$ ] >> ->
    let sname = add_static arg e in
-   <:expr< Pa_ppx_static.Runtime.Static.get $lid:sname$ >>
+   <:expr< Pa_ppx_static_runtime.Static.get $lid:sname$ >>
 | _ -> assert false
 let install () = 
 let ef = EF.mk () in 
