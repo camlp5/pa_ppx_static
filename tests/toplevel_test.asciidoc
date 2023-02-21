@@ -85,7 +85,7 @@ Additional Camlp5 directives:
 
 ```ocaml
 # let x = [%static 2] ;;
-val __static_0__ : int Pa_ppx_static.Runtime.Static.t = <abstr>
+val __static_0__ : int Pa_ppx_static_runtime.Static.t = <abstr>
 val x : int = 2
 ```
 
@@ -96,7 +96,7 @@ val x : int = 2
 
 ```ocaml
 # #use "use_test_ml";;
-val __static_0__ : int Pa_ppx_static.Runtime.Static.t = <abstr>
+val __static_0__ : int Pa_ppx_static_runtime.Static.t = <abstr>
 val hd : 'a -> int = <fun>
 - : int = 2
 val x : int = 1

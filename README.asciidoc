@@ -85,7 +85,7 @@ Additional Camlp5 directives:
 
 ```ocaml
 # let x = [%static 2] ;;
-val __static_0__ : int Pa_ppx_static.Runtime.Static.t = <abstr>
+val __static_0__ : int Pa_ppx_static_runtime.Static.t = <abstr>
 val x : int = 2
 ```
 
