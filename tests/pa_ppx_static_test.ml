@@ -1,4 +1,4 @@
-(** -syntax camlp5o *)
+(**pp -syntax camlp5o *)
 [%%static_preamble open List]
 open OUnit2
 
