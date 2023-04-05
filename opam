@@ -31,3 +31,9 @@ build: [
   [make "test"] {with-test}
 ]
 install: [make "install"]
+url {
+  src: ""
+  checksum: [
+    "sha512="
+  ]
+}
