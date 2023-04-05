@@ -1,3 +1,4 @@
+version: "0.01"
 synopsis: "A Camlp5 PPX Rewriter for static blocks "
 description:
 """
