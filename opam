@@ -22,7 +22,7 @@ depends: [
   "camlp5"      { >= "8.01.00" }
   "pa_ppx"      { >= "0.12" }
   "not-ocamlfind" { >= "0.10" }
-  "ounit" {with-test}
+  "ounit2" {with-test}
   "fmt"
   "mdx" {with-test}
 ]
