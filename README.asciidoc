@@ -1,5 +1,5 @@
-`pa_ppx_static`: what it says on the tin
-========================================
+`pa_ppx_static version 0.01`: "static blocks" for OCaml
+=======================================================
 :toc:
 :toc-placement: preamble
 
@@ -47,7 +47,7 @@ opam install pa_ppx_static
 
 to build and install, once `pa_ppx` is installed, `make all test` will do the rest.
 
-=== Usage vla the OCaml compiler
+=== Usage via the OCaml compiler
 
 To use this PPX rewriter via the OCaml batch compiler, put your static declarations 
 

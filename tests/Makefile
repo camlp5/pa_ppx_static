@@ -14,8 +14,8 @@ TESTS=pa_ppx_static_test.exe
 
 all: $(TESTS)
 
-
-test:: all toplevel_test.asciidoc.TEST
+## NOTE WELL:  toplevel_test.asciidoc.TEST is not being tested (b/c MDX is backlevel)
+test:: all
 	mkdir -p _build && ./pa_ppx_static_test.exe
 
 toplevel_test.asciidoc.corrected: use_test_ml
