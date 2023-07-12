@@ -17,6 +17,7 @@ all: $(TESTS)
 ## NOTE WELL:  toplevel_test.asciidoc.TEST is not being tested (b/c MDX is backlevel)
 test:: all
 	mkdir -p _build && ./pa_ppx_static_test.exe
+#	$(MAKE) toplevel_test.asciidoc.TEST
 
 toplevel_test.asciidoc.corrected: use_test_ml
 
