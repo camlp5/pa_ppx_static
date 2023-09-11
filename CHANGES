@@ -1,4 +1,9 @@
 
+pa_ppx_static Version 0.02
+-------------------
+
+* [11 Sep 2023] fix Makefiles
+
 pa_ppx_static Version 0.01
 -------------------
 
