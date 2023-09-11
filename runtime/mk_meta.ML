@@ -14,7 +14,7 @@ Arg.(parse [
 
 Fmt.(pf stdout {|
 # Specifications for the "pa_ppx_static_runtime" package:
-requires = "fmt,re,pcre,pa_ppx.base"
+requires = "fmt,pa_ppx.base"
 version = "%s"
 description = "pa_ppx_static runtime support"
 

@@ -14,8 +14,7 @@ that name will be used in place of the expression, so that the
 expression will be evaluated only once.  Viz.
 ```
 let f s =
-  let re = [%static Pcre.regexp "(a)(b)(c))"] in
-  Pcre.exec ~rex s
+  let re = [%static Pcre2.exec ~rex s
 ```
 
 `[%%static_preamble ...]`::
@@ -26,16 +25,16 @@ provides statements that will precede all the expressions in static
 blocks.  That is to say (again, only in files), the preamble
 
 ```
-[%%static_preamble open Pcre]
+[%%static_preamble open Pcre2]
 ```
 could then allow the example above to become
 ```
 let f s =
   let re = [%static regexp "(a)(b)(c))"] in
-  Pcre.exec ~rex s
+  Pcre2.exec ~rex s
 ```
 
-NOTE that the `Pcre.exec` hasn't changed: we didn't `open Pcre` for
+NOTE that the `Pcre2.exec` hasn't changed: we didn't `open Pcre2` for
 the entire file, only for the static blocks.
 
 == Installation and Invocation

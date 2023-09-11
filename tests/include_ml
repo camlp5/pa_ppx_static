@@ -4,9 +4,7 @@
 #require "oUnit";;
 #require "fmt";;
 #require "rresult";;
-#require "pcre";;
 #require "bos";;
-#require "pcre";;
 #require "re";;
 #require "str";;
 
