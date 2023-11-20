@@ -15,10 +15,6 @@ TOOLSML = mk_meta.ml
 ALLSRC=$(ML) $(TOOLSML)
 ALLPACKAGES=$(PACKAGES)
 
-export MIGRATE_CFLAGS= -ppopt -pa_import-I -ppopt . -ppopt -pa_passthru-debug \
-	-ppopt -pa_import-package -ppopt $(PACKAGES)
-export MIGRATE_PACKAGES=pa_ppx.import,pa_ppx_migrate
-
 all: $(CMO) camlp5.pa_ppx_static camlp5.pa_ppx_static.opt META
 	$(MAKE) DESTDIR=$(WD)/$(TOP)/local-install/ install
 
