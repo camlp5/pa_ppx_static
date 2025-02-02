@@ -1,11 +1,16 @@
 
+pa_ppx_static Version 0.03
+--------------------------
+
+* [01 Feb 2025] sync config/Makefiles across pa_ppx* packages
+
 pa_ppx_static Version 0.02
--------------------
+--------------------------
 
 * [11 Sep 2023] fix Makefiles
 
 pa_ppx_static Version 0.01
--------------------
+--------------------------
 
 * [05 Apr 2023] First release
 
