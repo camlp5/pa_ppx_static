@@ -45,7 +45,7 @@ To install this package via opam:
 opam install pa_ppx_static
 ```
 
-to build and install, once `pa_ppx` is installed, `make all test` will do the rest.
+to build and install, once `pa_ppx` is installed, `make sys test` will do the rest.
 
 === Usage via the OCaml compiler
 
