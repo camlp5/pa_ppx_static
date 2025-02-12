@@ -1,3 +1,5 @@
-pa_regexp.cmo pa_regexp.cmi pa_regexp.cmx: 
-pa_regexp.cmo :
-pa_regexp.cmx :
+pa_ppx_static.cmo pa_ppx_static.cmi pa_ppx_static.cmx: 
+pa_ppx_static.cmo :
+pa_ppx_static.cmx :
+mk_meta.cmo :
+mk_meta.cmx :
