@@ -21,9 +21,6 @@ test:: all
 
 toplevel_test.asciidoc.corrected: use_test_ml
 
-toplevel::
-	$(LAUNCH) ocaml -nopromptcont
-
 pa_ppx_static_test.exe: pa_ppx_static_test.cmo
 	$(LAUNCH) $(OCAMLFIND) ocamlc -linkall -linkpkg $(OCAMLCFLAGS) -package $(PACKAGES) -linkpkg -linkall -o $@ $<
 
