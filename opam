@@ -26,9 +26,7 @@ depends: [
   "not-ocamlfind" { >= "0.10" }
   "ounit" { >= "2.2.7" }
   "fmt"
-(*
   "mdx" { >= "2.3.0" & with-test}
-*)
 ]
 build: [
   [make "sys"]

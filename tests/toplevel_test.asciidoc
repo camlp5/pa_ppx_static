@@ -71,11 +71,6 @@ Additional Camlp5 directives:
 
 - : unit = ()
 # #camlp5o ;;
-: added to search path
-: added to search path
-: loaded
-: added to search path
-: loaded
 # #require "camlp5.pr_o";;
 # #require "pa_ppx_static" ;;
 ```
