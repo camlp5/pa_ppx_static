@@ -29,7 +29,7 @@ depends: [
   "mdx" { >= "2.3.0" & with-test}
 ]
 build: [
-  [make "sys"]
+  [make "DEBUG=-g" "sys"]
   [make "test"] {with-test}
 ]
 install: [make "install"]
