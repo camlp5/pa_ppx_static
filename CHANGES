@@ -1,3 +1,11 @@
+pa_ppx_static Version 8.05.01
+-----------------------------
+
+* [14 May 2026]
+
+  * sync version with Camlp5 8.05.01
+
+  * sync config/Makefiles across pa_ppx* packages
 
 pa_ppx_static Version 0.03
 --------------------------
