@@ -20,9 +20,9 @@ doc: "https://github.com/camlp5/pa_ppx_static/doc"
 depends: [
   "ocaml"       { >= "4.10.0" }
   "camlp5-buildscripts" { >= "0.02" }
-  "camlp5"      { >= "8.01.00" }
+  "camlp5"      { >= "8.05.01" }
   "pcre2" { with-test }
-  "pa_ppx"      { >= "0.12" }
+  "pa_ppx"      { >= "8.05.01" }
   "not-ocamlfind" { >= "0.10" }
   "ounit" { >= "2.2.7" }
   "fmt"
