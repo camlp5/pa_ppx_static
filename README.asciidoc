@@ -1,5 +1,5 @@
-`pa_ppx_static version 0.01`: "static blocks" for OCaml
-=======================================================
+`pa_ppx_static version 8.05.01`: "static blocks" for OCaml
+==========================================================
 :toc:
 :toc-placement: preamble
 
