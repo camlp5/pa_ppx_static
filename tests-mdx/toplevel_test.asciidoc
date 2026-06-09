@@ -89,7 +89,7 @@ val x : int = 2
 ```
 
 ```ocaml
-# #use "use_test_ml";;
+# #use "fixtures/use_test_ml";;
 val __static_0__ : int Pa_ppx_static_runtime.Static.t = <abstr>
 val hd : 'a -> int = <fun>
 - : int = 2

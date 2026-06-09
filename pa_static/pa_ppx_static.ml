@@ -1,4 +1,4 @@
-(**pp -syntax camlp5o *)
+(**pp -syntax camlp5o -package camlp5.extfun,camlp5.parser_quotations *)
 (* camlp5o *)
 (* pa_string.ml,v *)
 (* Copyright (c) INRIA 2007-2017 *)

@@ -3,13 +3,14 @@
 
 TOP=.
 include $(TOP)/config/Makefile.top
+include $(TOP)/config/Makefile.mdx
 
 WD=$(shell pwd)
 DESTDIR=
 
 SYSDIRS= runtime pa_static
 
-TESTDIRS= tests
+TESTDIRS= tests tests-mdx
 
 all: sys
 	set -e; for i in $(TESTDIRS); do cd $$i; $(MAKE) all; cd ..; done
@@ -17,11 +18,8 @@ all: sys
 sys:
 	set -e; for i in $(SYSDIRS); do cd $$i; $(MAKE) all; cd ..; done
 
-## NOTE WELL: not testing with MDX (b/c MDX is backlevel)
-test: all mdx-test
+test: all
 	set -e; for i in $(TESTDIRS); do cd $$i; $(MAKE) test; cd ..; done
-
-mdx-test:: README.asciidoc.TEST
 
 META: sys
 	$(JOINMETA) -rewrite pa_ppx_static_runtime:pa_ppx_static.runtime \
