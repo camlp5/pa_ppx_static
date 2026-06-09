@@ -8,6 +8,8 @@ open Pa_ppx_utils
 open Pa_passthru
 open Ppxutil
 
+let pp_expr pps x = MLPrinters.OP.Pretty.pp_expr pps x
+
 let reloc_expr e = Reloc.expr (fun _ -> Ploc.dummy) 0 e
 
 module ExprHash = Hashtbl.Make(struct
@@ -107,13 +109,6 @@ let finish_use_file arg z =
     let si = <:str_item:< open(struct $list:sil0$ end) >> in
     ([si]@sil, b)
 
-let rewrite_static arg = function
-  <:expr:< [%static $exp:e$ ] >> ->
-   let sname = add_static arg e in
-   <:expr< Pa_ppx_static_runtime.Static.get $lid:sname$ >>
-| e -> Fmt.(raise_failwithf (MLast.loc_of_expr e) "pa_ppx_static: payload of a [%%static ...] extension must be a single expression: %a"
-            Pp_MLast.pp_expr e)
-
 let pp_str_item msg ty =
   Fmt.(pf stderr "%s: #<str_item< %s >>\n%!" msg (Eprinter.apply Pcaml.pr_str_item Pprintf.empty_pc ty))
 
@@ -156,12 +151,14 @@ let rewrite_static arg = function
   <:expr:< [%static $exp:e$ ] >> ->
    let sname = add_static arg e in
    <:expr< Pa_ppx_static_runtime.Static.get $lid:sname$ >>
-| _ -> assert false
+| e -> Fmt.(raise_failwithf (MLast.loc_of_expr e) "pa_ppx_static: payload of a [%%static ...] extension must be a single expression: %a"
+            pp_expr e)
+
 let install () = 
 let ef = EF.mk () in 
 let ef = EF.{ (ef) with
             expr = extfun ef.expr with [
-    <:expr:< [%static $exp:_$ ] >> as z ->
+    <:expr:< [%static $stri:_$ ] >> as z ->
     fun arg fallback ->
       Some (rewrite_static arg z)
   ] } in

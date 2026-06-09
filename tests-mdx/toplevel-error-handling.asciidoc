@@ -1,0 +1,55 @@
+Test OCaml Toplevel Error Handling
+==================================
+:toc:
+:toc-placement: preamble
+
+```ocaml
+# #directory ".";;
+# #use "topfind.camlp5";;
+- : unit = ()
+Findlib has been successfully loaded. Additional directives:
+  #require "package";;      to load a package
+  #list;;                   to list the available packages
+  #camlp4o;;                to load camlp4 (standard syntax)
+  #camlp4r;;                to load camlp4 (revised syntax)
+  #predicates "p,q,...";;   to set these predicates
+  Topfind.reset();;         to force that packages will be reloaded
+  #thread;;                 to enable threads
+
+- : unit = ()
+Additional Camlp5 directives:
+  #camlp5o;;                to load camlp5 (standard syntax)
+  #camlp5r;;                to load camlp5 (revised syntax)
+
+- : unit = ()
+# #camlp5o ;;
+# #require "pa_ppx.runtime" ;;
+# #require "pa_ppx.runtime_fat" ;;
+# Pa_ppx_runtime.Exceptions.Ploc.pp_loc_verbose := true ;;
+- : unit = ()
+# Pa_ppx_runtime_fat.Exceptions.Ploc.pp_loc_verbose := true ;;
+- : unit = ()
+# #install_printer Pa_ppx_runtime.Exceptions.Ploc.pp;;
+```
+
+```ocaml
+# let exc_converter = function
+    Exit as exc ->
+    let s = Printexc.to_string exc in
+    Some (Location.error s)
+  | _ -> None
+val exc_converter : exn -> Location.report option = <fun>
+# Location.register_error_of_exn exc_converter ;;
+- : unit = ()
+```
+```ocaml
+# #require "pa_ppx_static" ;;
+```
+
+```ocaml
+# [%static type t = int] ;;
+File "_none_", line 1, characters 0-22:
+Failure: pa_ppx_static: payload of a [%static ...] extension must be a single expression: [%static type t = int;;]
+Line 1, characters 0-0:
+Error: Stdlib.Exit
+```

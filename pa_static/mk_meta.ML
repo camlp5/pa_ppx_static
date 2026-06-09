@@ -14,13 +14,13 @@ Arg.(parse [
 
 Fmt.(pf stdout {|
 # Specifications for the "pa_ppx_static" preprocessor:
-requires = "camlp5,fmt,pa_ppx.base,pa_ppx_static_runtime,camlp5.parser_quotations"
+requires = "camlp5,fmt,pa_ppx.base,pa_ppx_static_runtime,camlp5.printers.full"
 version = "%s"
 description = "pa_ppx_static: pa_ppx_static rewriter"
 
 # For linking
 package "link" (
-requires = "camlp5,fmt,pa_ppx.base.link,camlp5.parser_quotations.link"
+requires = "camlp5,fmt,pa_ppx.base.link,camlp5.printers.full"
 archive(byte) = "pa_ppx_static.cmo"
 archive(native) = "pa_ppx_static.cmx"
 )
@@ -29,7 +29,7 @@ archive(native) = "pa_ppx_static.cmx"
 archive(byte,toploop) = "pa_ppx_static.cmo"
 
   # For the preprocessor itself:
-  requires(syntax,preprocessor) = "camlp5,fmt,pa_ppx.base,camlp5.parser_quotations"
+  requires(syntax,preprocessor) = "camlp5,fmt,pa_ppx.base,camlp5.printers.full"
   archive(syntax,preprocessor,-native) = "pa_ppx_static.cmo"
   archive(syntax,preprocessor,native) = "pa_ppx_static.cmx"
 
