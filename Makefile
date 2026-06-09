@@ -3,7 +3,6 @@
 
 TOP=.
 include $(TOP)/config/Makefile.top
-include $(TOP)/config/Makefile.mdx
 
 WD=$(shell pwd)
 DESTDIR=
